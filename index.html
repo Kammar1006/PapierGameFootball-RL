@@ -1,0 +1,68 @@
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Papier Game Football - Remastered Edition</title>
+	<style>
+		*{
+			box-sizing: border-box;
+		}
+		body{
+			background-color: #565656;
+			color: #ccc;
+			text-align: center;
+		}
+		canvas{
+			background-color:#565656;
+		}
+		*{
+			margin:0%;
+		}
+		.flex{
+			display: flex;
+		}
+		.w30{
+			width: 30%;
+		}
+		.w70{
+			width: 70%;
+		}
+		.w100{
+			width: 100%;
+		}
+		.b1{
+			border: 1px #cce solid;
+		}
+	</style>
+</head>
+<body>
+	<div class="flex w100">
+		<div class="w30 b1">
+			<br>
+			<h2 id="stan"><p onclick="Start()">START</p></h2>
+			<br>
+			<hr>
+			<br>
+			<div class="flex">
+				<div class="w30">
+					Board Width: <br>
+					Board Height:
+				</div>
+				<div class="w70" style="display: flex; justify-content: center;">
+					<div class="w70">
+						<input style="text-align: center;" class="w100" id="wdh" value="10"/> <br>
+						<input style="text-align: center;" class="w100" id="hgh" value="14"/>
+					</div>
+				</div>
+			</div>
+			<br>
+			<hr>
+			<br>
+			<input type="submit" value="New Game" onclick="StartNewGame()"/>
+		</div>
+		<div class="w70 b1">
+			<canvas></canvas>
+		</div>
+	</div>
+	<script src="main.js"></script>	
+</body>
+</html>
