@@ -80,7 +80,7 @@ const canvas=document.querySelector("canvas");
 		var ball = {
 			ruch: function(color, pos){
 				if((points[x][y][pos]==0 || pos==8) && endgame==0){
-					console.log(x,y,points[x][y]);
+					//console.log(x,y,points[x][y], pos);
 					if(pos!=8) points[x][y][pos]=1;
 					if(pos!=8 && color=="red") ball.ruch("red", 8);
 					if(pos==0){
@@ -140,14 +140,16 @@ const canvas=document.querySelector("canvas");
 					}
 					av=pos;
 					
-					if(y==-1){
-						End_Game(-1);
-						return;
-					} 
-					if(y==ih+1){
-						End_Game(1);
-						return;
-					} 
+                    if(pos != 8){
+                        if(y==-1){
+                            End_Game(-1);
+                            return;
+                        } 
+                        if(y==ih+1){
+                            End_Game(1);
+                            return;
+                        }
+                    }
 					
 					if(av!=8){
 						pos+=4;
@@ -178,16 +180,20 @@ const canvas=document.querySelector("canvas");
 			gamer=-1;
 			if(y==ih+1) End_Game(-gamer);
 			if(points[x][y][4]==0 && x!=1 && x!=(iw-1)) ball.ruch("blue",4);
-			else if(points[x][y][5]==0 && x==1) ball.ruch("blue",5);			
-			else if(points[x][y][3]==0 && x==(iw-1)) ball.ruch("blue",3);			
+			else if(points[x][y][5]==0 && x==1 && y < ih) ball.ruch("blue",5);			
+			else if(points[x][y][3]==0 && x==(iw-1) && y < ih) ball.ruch("blue",3);			
 			else if(points[x][y][5]==0 && x>=1/2*iw) ball.ruch("blue",5);
 			else if(points[x][y][3]==0 && x<=1/2*iw) ball.ruch("blue",3);
 			else if(points[x][y][5]==0) ball.ruch("blue",5);
-			else if(points[x][y][3]==0) ball.ruch("blue",3);			
-			else if(points[x][y][2]==0) ball.ruch("blue",2);
+			else if(points[x][y][3]==0) ball.ruch("blue",3);
+			else if(points[x][y][6]==0 && x>=1/2*iw) ball.ruch("blue",6);
+			else if(points[x][y][2]==0 && x<=1/2*iw) ball.ruch("blue",2);
 			else if(points[x][y][6]==0) ball.ruch("blue",6);
+            else if(points[x][y][2]==0) ball.ruch("blue",2);
+			else if(points[x][y][7]==0 && x>=1/2*iw) ball.ruch("blue",7);
+			else if(points[x][y][1]==0 && x<=1/2*iw) ball.ruch("blue",1);
+            else if(points[x][y][7]==0) ball.ruch("blue",7);
 			else if(points[x][y][1]==0) ball.ruch("blue",1);
-			else if(points[x][y][7]==0) ball.ruch("blue",7);
 			else if(points[x][y][0]==0) ball.ruch("blue",0);
 			//SI_start();
 			

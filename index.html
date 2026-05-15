@@ -20,14 +20,27 @@
 		.flex{
 			display: flex;
 		}
+		.flexw{
+			display: flex;
+			flex-wrap: wrap;
+		}
 		.w30{
 			width: 30%;
+		}
+		.w33{
+			width: 33%;
 		}
 		.w70{
 			width: 70%;
 		}
 		.w100{
 			width: 100%;
+		}
+		.h33{
+			height: 33%;
+		}
+		.h100{
+			height: 100%;
 		}
 		.b1{
 			border: 1px #cce solid;
@@ -37,27 +50,39 @@
 <body>
 	<div class="flex w100">
 		<div class="w30 b1">
-			<br>
-			<h2 id="stan"><p onclick="Start()">START</p></h2>
-			<br>
-			<hr>
-			<br>
-			<div class="flex">
-				<div class="w30">
-					Board Width: <br>
-					Board Height:
-				</div>
-				<div class="w70" style="display: flex; justify-content: center;">
-					<div class="w70">
-						<input style="text-align: center;" class="w100" id="wdh" value="10"/> <br>
-						<input style="text-align: center;" class="w100" id="hgh" value="14"/>
+			<div class="w100 b1">
+				<br>
+				<h2 id="stan"><p onclick="Start()">START</p></h2>
+				<br>
+				<hr>
+				<br>
+				<div class="flex">
+					<div class="w30">
+						Board Width: <br>
+						Board Height:
 					</div>
+					<div class="w70" style="display: flex; justify-content: center;">
+						<div class="w70">
+							<input style="text-align: center;" class="w100" id="wdh" value="10"/> <br>
+							<input style="text-align: center;" class="w100" id="hgh" value="14"/>
+						</div>
+					</div>
+					<br>
+					<br>
+					<br>
 				</div>
 			</div>
-			<br>
-			<hr>
-			<br>
-			<input type="submit" value="New Game" onclick="StartNewGame()"/>
+			<div class="w100 h33 flexw">
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="NW" onclick="KeyClick(81)"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="N" onclick="KeyClick(87)"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="NE" onclick="KeyClick(69)"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="W" onclick="KeyClick(65)"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="NEW GAME" onclick="StartNewGame()"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="E" onclick="KeyClick(68)"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="SW" onclick="KeyClick(90)"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="S" onclick="KeyClick(88)"> </div>
+				<div class="w33 h33"> <input class="w100 h100" type="submit" value="SE" onclick="KeyClick(67)"> </div>
+			</div>
 		</div>
 		<div class="w70 b1">
 			<canvas></canvas>
