@@ -8,7 +8,8 @@ function possibleMoves(arr){
 }
 
 function calcScore(x, y){
-    return Math.abs(ih+1 - y) + Math.abs(iw/2 - x)
+    if(x >= 4 && x <= 6 && y == -1) return 1000;
+    return 2*Math.abs(ih+1 - y) + Math.abs(iw/2 - x);
 }
 
 function copy(arr){
@@ -17,38 +18,11 @@ function copy(arr){
 
 function move(board, x, y, pos){
     board[x][y][pos]=1;
-    if(pos==0){
-        x+=0;
-        y-=1;
-    }			
-    if(pos==1){
-        x+=1;
-        y-=1;
-    }
-    if(pos==2){			
-        x+=1;
-        y-=0;
-    }
-    if(pos==3){		
-        x+=1;
-        y+=1;
-    }
-    if(pos==4){		
-        x+=0;
-        y+=1;
-    }
-    if(pos==5){			
-        x-=1;
-        y+=1;
-    }
-    if(pos==6){				
-        x-=1;
-        y+=0;
-    }
-    if(pos==7){		
-        x-=1;
-        y-=1;
-    }
+    xChange = [0, 1, 1, 1, 0, -1, -1, -1]
+    yChange = [-1, -1, 0, 1, 1, 1, 0, -1]
+    
+    x += xChange[pos]
+    y += yChange[pos]
 
     pos+=4;
     if(pos>=8) pos-=8;
@@ -77,8 +51,9 @@ function BTA(board, x, y, deep = 3){
         if (sum == 8){
             score = 1000
         }
-        if (sum == 1 || deep == 0) {
-            score = calcScore(xc, yc)
+        score = calcScore(xc, yc)
+        if (sum == 1 || deep == 0 || score >= 1000) {
+            
             let path = [e]
             console.log("try 1: ", path)
             if(score < best_score){
