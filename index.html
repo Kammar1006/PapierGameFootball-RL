@@ -46,6 +46,7 @@
 			border: 1px #cce solid;
 		}
 	</style>
+	<script src="bta.js"></script>	
 </head>
 <body>
 	<div class="flex w100">
@@ -82,6 +83,12 @@
 				<div class="w33 h33"> <input class="w100 h100" type="submit" value="SW" onclick="KeyClick(90)"> </div>
 				<div class="w33 h33"> <input class="w100 h100" type="submit" value="S" onclick="KeyClick(88)"> </div>
 				<div class="w33 h33"> <input class="w100 h100" type="submit" value="SE" onclick="KeyClick(67)"> </div>
+			</div>
+			<div>
+				<br>
+				<h2> Difficulty: </h2>
+				<input style="text-align: center;" class="w33" id="level" type="number" value="2" min="1" max="2" onchange="fixLevel()">
+				<p> You may change difficulty during match </p>
 			</div>
 		</div>
 		<div class="w70 b1">

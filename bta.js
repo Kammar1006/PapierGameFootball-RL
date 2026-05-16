@@ -1,12 +1,14 @@
 function possibleMoves(arr){
     let arr2 = []
-    arr.forEach(element, i => {
-        if (element == 0) arr2.push(i)
+    arr.forEach((e, i) => {
+        if (e == 0) arr2.push(i)
     });
+
+    return arr2;
 }
 
 function calcScore(x, y){
-    return Math.max((ih - y), Math.abs(iw/2 - x))
+    return Math.abs(ih+1 - y) + Math.abs(iw/2 - x)
 }
 
 function copy(arr){
@@ -50,6 +52,7 @@ function move(board, x, y, pos){
 
     pos+=4;
     if(pos>=8) pos-=8;
+    console.log(board[x], pos, x, y)
     board[x][y][pos]=1;
     sum=board[x][y][0]+board[x][y][1]+board[x][y][2]+board[x][y][3]+board[x][y][4]+board[x][y][5]+board[x][y][6]+board[x][y][7];
 
@@ -59,20 +62,37 @@ function move(board, x, y, pos){
 function BTA(board, x, y, deep = 3){
     let best_path = []
     let best_score = 10000
-    possibleMoves(board[x][y]).forEach(e => {
-        [board_copy, xc, yc, sum] = move(copy(board), x, y)
+    let pm = possibleMoves(board[x][y]);
+    console.log("PM: ", pm);
+
+    pm.forEach(e => {
+        console.log(x, y)
+        let arr = move(copy(board), x, y, e)
+        let board_copy = arr[0]
+        let xc = arr[1]
+        let yc = arr[2]
+        let sum = arr[3]
+        console.log(xc, yc)
         let score = 0
         if (sum == 8){
-            continue
+            score = 1000
         }
-        if (deep == 0) {
+        if (sum == 1 || deep == 0) {
             score = calcScore(xc, yc)
+            let path = [e]
+            console.log("try 1: ", path)
+            if(score < best_score){
+                best_score = score
+                best_path = path
+            }
         }
         else{
-            res = BTA(board_copy, xc, yc, deep-1)
+            res = BTA(board_copy, xc, yc, deep - 1)
+            let path = [e].concat(res.path)
+            console.log("try 2: ", path, ", sum = ", sum)
             if(res.score < best_score){
                 best_score = res.score
-                best_path = res.path
+                best_path = path
             }
         }
     })
