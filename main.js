@@ -78,11 +78,11 @@ const canvas=document.querySelector("canvas");
 		}
 	
 		var ball = {
-			ruch: function(color, pos){
+			move: function(color, pos){
 				if((points[x][y][pos]==0 || pos==8) && endgame==0){
 					//console.log(x,y,points[x][y], pos);
 					if(pos!=8) points[x][y][pos]=1;
-					if(pos!=8 && color=="red") ball.ruch("red", 8);
+					if(pos!=8 && color=="red") ball.move("red", 8);
 					if(pos==0){
 						ctx.fillStyle=color;
 						for(i=0;i<cw/(iw+2)*1-4;i++) ctx.fillRect(cw/(iw+2)*(x+1)-2,(y+2)*ch/(ih+4)-i,5,-4);
@@ -162,13 +162,13 @@ const canvas=document.querySelector("canvas");
 						else Turn("YOT");
 					}
 				}
-				else if(points[x][y][pos]==1 && pos!=8) ball.ruch("black", 8);
+				else if(points[x][y][pos]==1 && pos!=8) ball.move("black", 8);
 			}
 		}
 		
 		function Your_Turn(){
 			document.getElementById("stan").innerHTML="YOUR TURN";
-			ball.ruch("black",8);
+			ball.move("black",8);
 			gamer=1;
 			if(y==-1) End_Game(-1);
 			if(y==ih+1) End_Game(1);
@@ -176,27 +176,40 @@ const canvas=document.querySelector("canvas");
 
 		function Your_Opponent_Turn(){
 			document.getElementById("stan").innerHTML="YOUR OPPONENT";
-			ball.ruch("blue",8);
+			ball.move("blue",8);
 			gamer=-1;
 			if(y==ih+1) End_Game(-gamer);
-			if(points[x][y][4]==0 && x!=1 && x!=(iw-1)) ball.ruch("blue",4);
-			else if(points[x][y][5]==0 && x==1 && y < ih) ball.ruch("blue",5);			
-			else if(points[x][y][3]==0 && x==(iw-1) && y < ih) ball.ruch("blue",3);			
-			else if(points[x][y][5]==0 && x>=1/2*iw) ball.ruch("blue",5);
-			else if(points[x][y][3]==0 && x<=1/2*iw) ball.ruch("blue",3);
-			else if(points[x][y][5]==0) ball.ruch("blue",5);
-			else if(points[x][y][3]==0) ball.ruch("blue",3);
-			else if(points[x][y][6]==0 && x>=1/2*iw) ball.ruch("blue",6);
-			else if(points[x][y][2]==0 && x<=1/2*iw) ball.ruch("blue",2);
-			else if(points[x][y][6]==0) ball.ruch("blue",6);
-            else if(points[x][y][2]==0) ball.ruch("blue",2);
-			else if(points[x][y][7]==0 && x>=1/2*iw) ball.ruch("blue",7);
-			else if(points[x][y][1]==0 && x<=1/2*iw) ball.ruch("blue",1);
-            else if(points[x][y][7]==0) ball.ruch("blue",7);
-			else if(points[x][y][1]==0) ball.ruch("blue",1);
-			else if(points[x][y][0]==0) ball.ruch("blue",0);
+			
 			//SI_start();
 			
+		}
+
+		function AI(){
+			let level = 1;
+			if (level == 1){
+				if(points[x][y][4]==0 && x!=1 && x!=(iw-1)) ball.move("blue",4);
+				else if(points[x][y][5]==0 && x==1 && y < ih) ball.move("blue",5);			
+				else if(points[x][y][3]==0 && x==(iw-1) && y < ih) ball.move("blue",3);			
+				else if(points[x][y][5]==0 && x>=1/2*iw) ball.move("blue",5);
+				else if(points[x][y][3]==0 && x<=1/2*iw) ball.move("blue",3);
+				else if(points[x][y][5]==0) ball.move("blue",5);
+				else if(points[x][y][3]==0) ball.move("blue",3);
+				else if(points[x][y][6]==0 && x>=1/2*iw) ball.move("blue",6);
+				else if(points[x][y][2]==0 && x<=1/2*iw) ball.move("blue",2);
+				else if(points[x][y][6]==0) ball.move("blue",6);
+				else if(points[x][y][2]==0) ball.move("blue",2);
+				else if(points[x][y][7]==0 && x>=1/2*iw) ball.move("blue",7);
+				else if(points[x][y][1]==0 && x<=1/2*iw) ball.move("blue",1);
+				else if(points[x][y][7]==0) ball.move("blue",7);
+				else if(points[x][y][1]==0) ball.move("blue",1);
+				else if(points[x][y][0]==0) ball.move("blue",0);
+			}
+			else if (level == 2){
+				res = BTA(points, x, y)
+				res.path.forEach(element => {
+					ball.move("blue", element)
+				});
+			}
 		}
 		
 		// function SI_start(){
@@ -270,7 +283,7 @@ const canvas=document.querySelector("canvas");
 			if(gamer != 1)
 				return;
 			let moveCodes = [87, 69, 68, 67, 88, 90, 65, 81]; // W, E, D, C, X, Z, A, Q
-			ball.ruch("red", moveCodes.indexOf(e));
+			ball.move("red", moveCodes.indexOf(e));
 		}
 		
 		function Start(){
@@ -284,7 +297,7 @@ const canvas=document.querySelector("canvas");
 		}
 		
 		function End_Game(gmr){
-			ball.ruch("black", 8);
+			ball.move("black", 8);
 			endgame=1;
 			if(gmr==-1) document.getElementById("stan").innerHTML="YOU WIN";
 			if(gmr==1) document.getElementById("stan").innerHTML="COMPUTER WINS";
