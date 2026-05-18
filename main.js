@@ -7,7 +7,7 @@ var cw=canvas.width=(iw+2)*50;
 var ch=canvas.height=(ih+4)*50;		
 
 var gamer; // 1 if your turn and -1 if opp turn
-var level = 2;
+var level = 3;
 
 var x=iw/2; // current ball position
 var y=ih/2; 
@@ -20,6 +20,8 @@ var points={};  //table which describe all posible moves form all localtion;
 
 var endgame = 0; //Endgame flag if 1 game is ended
 var queue = null; //queue for AI/Computer moves if are calculated
+
+var max_deep = 3
 
 var Table = {
 	color:"white",
@@ -173,7 +175,7 @@ function range(a, c, b){
 }
 
 function fixLevel(){
-	level = range(1, parseInt(document.getElementById("level").value), 2);
+	level = range(1, parseInt(document.getElementById("level").value), 3);
 }
 
 function Your_Turn(){
@@ -230,8 +232,8 @@ function AI(){
 		else if(points[x][y][1]==0) return [1];
 		else if(points[x][y][0]==0) return [0];
 	}
-	else if (level == 2){
-		res = BTA(points, x, y)
+	else if (level == 2 || level == 3){
+		res = BTA(points, x, y, (2 ? level == 2 : 5))
 		mv = []
 		res.path.forEach(element => {
 			mv.push(element)

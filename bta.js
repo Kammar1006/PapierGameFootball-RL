@@ -9,7 +9,7 @@ function possibleMoves(arr){
 
 function calcScore(x, y){
     if(x >= 4 && x <= 6 && y == -1) return 1000;
-    return 2*Math.abs(ih+1 - y) + Math.abs(iw/2 - x);
+    return 5*Math.abs(ih+1 - y) + 4*Math.abs(iw/2 - x);
 }
 
 function copy(arr){
@@ -33,7 +33,7 @@ function move(board, x, y, pos){
     return [board, x, y, sum]
 }
 
-function BTA(board, x, y, deep = 3){
+function BTA(board, x, y, deep = max_deep){
     let best_path = []
     let best_score = 10000
     let pm = possibleMoves(board[x][y]);
@@ -48,15 +48,18 @@ function BTA(board, x, y, deep = 3){
         let sum = arr[3]
         console.log(xc, yc)
         let score = 0
+        let rnd = Math.floor(Math.random()*100)+1
         if (sum == 8){
             score = 1000
         }
-        score = calcScore(xc, yc)
+        else{
+            score = calcScore(xc, yc)
+        }
         if (sum == 1 || deep == 0 || score >= 1000) {
             
             let path = [e]
             console.log("try 1: ", path)
-            if(score < best_score){
+            if(score < best_score || (score == best_score && rnd <= 30)){
                 best_score = score
                 best_path = path
             }
@@ -65,7 +68,7 @@ function BTA(board, x, y, deep = 3){
             res = BTA(board_copy, xc, yc, deep - 1)
             let path = [e].concat(res.path)
             console.log("try 2: ", path, ", sum = ", sum)
-            if(res.score < best_score){
+            if(res.score < best_score || (res.score == best_score && rnd <= 30)){
                 best_score = res.score
                 best_path = path
             }
