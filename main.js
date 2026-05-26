@@ -10,17 +10,17 @@ var level = 3;
 var main_game = null;
 var main_ui = null;
 
-function gameEnv(){
-	this.board = {
+function gameEnv(_board = null, _x = null, _y = null){
+	this.board = _board === null ? {
 		//table which describe all posible moves form all localtion; 
 		//each position for example board[4][5] contain 8 value array with indexes 0 to 7
 		//each index describe one direction starting form N, NE, E.. up to NS - clockwise
 		//number 0 tell that move is possible, and number 1 that is blocked
 		//if direction array is sum to 8 then move is impossible from chosen position
-	}
+	} : _board
 
-	this.x = iw/2; // current ball position
-	this.y = ih/2; 
+	this.x = _x === null ? iw/2 : _x; // current ball position
+	this.y = _y === null ? ih/2 : _y; 
 	this.queue = null; //queue for AI/Computer moves if are calculated
 	this.endgame = 0; //Endgame flag if 1 game is ended
 	this.gamer = 1;
@@ -104,13 +104,13 @@ function canvasUI(x, y){
 		}			
 	}
 	this.moveUI = (color, pos) => {
-		if(main_game.endgame==0){
+		if(pos==8){
+			ctx.fillStyle=color;
+			ctx.fillRect(cw/(iw+2)*(this.x+1)-2,(this.y+2)*ch/(ih+4)-2,5,5);
+			return;
+		}
+		else if(main_game.endgame==0){
 			if(pos!=8 && color=="red") this.moveUI("red", 8);
-			if(pos==8){
-				ctx.fillStyle=color;
-				ctx.fillRect(cw/(iw+2)*(this.x+1)-2,(this.y+2)*ch/(ih+4)-2,5,5);
-				return;
-			}	
 			if(pos==0){
 				ctx.fillStyle=color;
 				for(i=0;i<cw/(iw+2)*1-4;i++) ctx.fillRect(cw/(iw+2)*(this.x+1)-2,(this.y+2)*ch/(ih+4)-i,5,-4);
@@ -184,12 +184,12 @@ function Your_Opponent_Turn(){
 	document.getElementById("stan").innerHTML="YOUR OPPONENT";
 	main_ui.moveUI("blue",8);
 	main_game.gamer=-1;
-	if(y==ih+1) End_Game(-gamer);
+	if(y==ih+1) End_Game(-main_game.gamer);
 	
 	//SI_start();
 	if(main_game.queue !== null){
-		let arr = main_game.move(queue[0])
-		if(arr[0]) main_ui.moveUI("blue", queue[0]);
+		let arr = main_game.move(main_game.queue[0])
+		if(arr[0]) main_ui.moveUI("blue", main_game.queue[0]);
 		else{
 			console.log("Error!!!! Wrong move!")
 			return;
@@ -223,7 +223,7 @@ function Your_Opponent_Turn(){
 function AI(){
 	let board = main_game.board;
 	let x = main_game.x;
-	let y= main_game.y;
+	let y = main_game.y;
 	if (level == 1){
 		if(board[x][y][4]==0 && x!=1 && x!=(iw-1)) return [4];
 		else if(board[x][y][5]==0 && x==1 && y < ih) return [5];			
@@ -243,7 +243,7 @@ function AI(){
 		else if(board[x][y][0]==0) return [0];
 	}
 	else if (level == 2 || level == 3){
-		res = BTA(copy(board), x, y, (2 ? level == 2 : 5))
+		res = BTA(copy(board), x, y, (level == 2 ? 2 : 5))
 		mv = []
 		res.path.forEach(element => {
 			mv.push(element)
@@ -265,6 +265,7 @@ function KeyClick(e){
 		return;
 	let moveCodes = [87, 69, 68, 67, 88, 90, 65, 81]; // W, E, D, C, X, Z, A, Q
 	let pos = moveCodes.indexOf(e)
+	if (pos === -1) return
 	let arr = main_game.move(pos)
 	console.log("H: ", arr)
 	if (arr[0] == true) {

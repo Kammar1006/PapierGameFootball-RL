@@ -11,7 +11,9 @@ function possibleMoves(arr){
 
 function calcScore(x, y, c = -1){ // for other player c = ih+1
     if(x >= 4 && x <= 6 && y == c) return 1000;
-    return 5*Math.abs(ih-c - y) + 4*Math.abs(iw/2 - x);
+    let dist_y = Math.abs(ih-c - y);
+    let dist_x = (dist_y > ih/2) ? Math.min(Math.abs(iw/4 - x), Math.abs(3*iw/4 - x)) : Math.abs(iw/2 - x);
+    return Math.floor(5*dist_y + 3*dist_x);
 }
 
 function copy(arr){
@@ -26,16 +28,14 @@ function BTA(board, x, y, deep = max_deep){
     console.log("PM: ", pm);
 
     pm.forEach(e => {
-        env = new gameEnv()
-        env.board = copy(board)
-        env.x = x
-        env.y = y
+        env = new gameEnv(copy(board), x, y)
 
         let arr = env.move(e)
-        let board_copy = arr[0]
-        let xc = arr[1]
-        let yc = arr[2]
-        let sum = arr[3]
+        console.log(arr)
+        let board_copy = arr[1]
+        let xc = arr[2]
+        let yc = arr[3]
+        let sum = arr[4]
         console.log(xc, yc)
         let score = 0
         let rnd = Math.floor(Math.random()*100)+1
