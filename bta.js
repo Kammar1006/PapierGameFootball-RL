@@ -1,3 +1,5 @@
+var max_deep = 3
+
 function possibleMoves(arr){
     let arr2 = []
     arr.forEach((e, i) => {
@@ -7,45 +9,33 @@ function possibleMoves(arr){
     return arr2;
 }
 
-function calcScore(x, y){
-    if(x >= 4 && x <= 6 && y == -1) return 1000;
-    return 5*Math.abs(ih+1 - y) + 4*Math.abs(iw/2 - x);
+function calcScore(x, y, c = -1){ // for other player c = ih+1
+    if(x >= 4 && x <= 6 && y == c) return 1000;
+    let dist_y = Math.abs(ih-c - y);
+    let dist_x = (dist_y > ih/2) ? Math.min(Math.abs(iw/4 - x), Math.abs(3*iw/4 - x)) : Math.abs(iw/2 - x);
+    return Math.floor(5*dist_y + 3*dist_x);
 }
 
 function copy(arr){
     return JSON.parse(JSON.stringify(arr))
 }
 
-function move(board, x, y, pos){
-    board[x][y][pos]=1;
-    xChange = [0, 1, 1, 1, 0, -1, -1, -1]
-    yChange = [-1, -1, 0, 1, 1, 1, 0, -1]
-    
-    x += xChange[pos]
-    y += yChange[pos]
-
-    pos+=4;
-    if(pos>=8) pos-=8;
-    console.log(board[x], pos, x, y)
-    board[x][y][pos]=1;
-    sum=board[x][y][0]+board[x][y][1]+board[x][y][2]+board[x][y][3]+board[x][y][4]+board[x][y][5]+board[x][y][6]+board[x][y][7];
-
-    return [board, x, y, sum]
-}
-
 function BTA(board, x, y, deep = max_deep){
+    console.log("BTA:::", board, x, y, deep)
     let best_path = []
     let best_score = 10000
     let pm = possibleMoves(board[x][y]);
     console.log("PM: ", pm);
 
     pm.forEach(e => {
-        console.log(x, y)
-        let arr = move(copy(board), x, y, e)
-        let board_copy = arr[0]
-        let xc = arr[1]
-        let yc = arr[2]
-        let sum = arr[3]
+        env = new gameEnv(copy(board), x, y)
+
+        let arr = env.move(e)
+        console.log(arr)
+        let board_copy = arr[1]
+        let xc = arr[2]
+        let yc = arr[3]
+        let sum = arr[4]
         console.log(xc, yc)
         let score = 0
         let rnd = Math.floor(Math.random()*100)+1

@@ -23,6 +23,10 @@
 		.flexw{
 			display: flex;
 			flex-wrap: wrap;
+			flex-direction: row;
+		}
+		.flexc{
+			display: flex;
 		}
 		.w30{
 			width: 30%;
@@ -49,11 +53,16 @@
 	<script src="bta.js"></script>	
 </head>
 <body>
-	<div class="flex w100">
-		<div class="w30 b1">
+	<div class="flex flexw w100 h100">
+		<div class="w30 h100 b1">
 			<div class="w100 b1">
 				<br>
-				<h2 id="stan"><p onclick="Start()">START</p></h2>
+				<h1> Football Remastered - RL </h1>
+				<h3> Version 0.3 -- 26.05.2026 </h3>
+				<br>
+				<hr>
+				<br>
+				<h2 id="stan"></h2>
 				<br>
 				<hr>
 				<br>
@@ -91,7 +100,7 @@
 				<p> You may change difficulty during match </p>
 			</div>
 		</div>
-		<div class="w70 b1">
+		<div class="w70 h100 b1">
 			<canvas></canvas>
 		</div>
 	</div>
