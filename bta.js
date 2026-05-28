@@ -1,4 +1,5 @@
 var max_deep = 3
+const RND = 30
 
 function possibleMoves(arr){
     let arr2 = []
@@ -37,7 +38,7 @@ function BTA(board, x, y, deep = max_deep){
         let yc = arr[3]
         let sum = arr[4]
         console.log(xc, yc)
-        let score = 0
+        let score = 10000
         let rnd = Math.floor(Math.random()*100)+1
         if (sum == 8){
             score = 1000
@@ -45,11 +46,10 @@ function BTA(board, x, y, deep = max_deep){
         else{
             score = calcScore(xc, yc)
         }
-        if (sum == 1 || deep == 0 || score >= 1000) {
-            
+        if (sum == 1 || deep == 0 || score >= 1000 || score == 0) {
             let path = [e]
             console.log("try 1: ", path)
-            if(score < best_score || (score == best_score && rnd <= 30)){
+            if(score < best_score || (score == best_score && rnd <= RND)){
                 best_score = score
                 best_path = path
             }
@@ -58,7 +58,7 @@ function BTA(board, x, y, deep = max_deep){
             res = BTA(board_copy, xc, yc, deep - 1)
             let path = [e].concat(res.path)
             console.log("try 2: ", path, ", sum = ", sum)
-            if(res.score < best_score || (res.score == best_score && rnd <= 30)){
+            if(res.score < best_score || (res.score == best_score && rnd <= RND)){
                 best_score = res.score
                 best_path = path
             }
