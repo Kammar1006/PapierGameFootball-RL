@@ -6,7 +6,7 @@ function possibleMoves(arr){
     arr.forEach((e, i) => {
         if (e == 0) arr2.push(i)
     });
-
+    console.log(arr2)
     return arr2;
 }
 
@@ -31,12 +31,10 @@ function BTA(board, x, y, deep = max_deep){
     pm.forEach(e => {
         env = new gameEnv(copy(board), x, y)
 
-        let arr = env.move(e)
-        console.log(arr)
-        let board_copy = arr[1]
-        let xc = arr[2]
-        let yc = arr[3]
-        let sum = arr[4]
+        let res = env.move(e)
+        let xc = res.x
+        let yc = res.y
+        let sum = res.sum
         console.log(xc, yc)
         let score = 10000
         let rnd = Math.floor(Math.random()*100)+1
@@ -55,7 +53,7 @@ function BTA(board, x, y, deep = max_deep){
             }
         }
         else{
-            res = BTA(board_copy, xc, yc, deep - 1)
+            res = BTA(res.board, xc, yc, deep - 1)
             let path = [e].concat(res.path)
             console.log("try 2: ", path, ", sum = ", sum)
             if(res.score < best_score || (res.score == best_score && rnd <= RND)){
